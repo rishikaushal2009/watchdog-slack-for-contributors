@@ -1,0 +1,33 @@
+---
+- name: Transfer and execute a script.
+  hosts: localhost
+  user: root
+  sudo: yes
+
+
+  vars_prompt:
+
+    - name: user
+      prompt: please provide github username
+      private: no
+
+    - name: repo
+      prompt: please provide github repo name
+      private: no
+
+    - name: web_url
+      prompt: please provide url token
+      private: no
+
+    - name: poll_in
+      prompt: please provide polling interval
+      private: no
+
+
+  tasks:
+     - name: Transfer the script
+       copy: src=/root/watch-dog.py dest=/ mode=0777
+
+     - name: Execute the script
+       shell: 'apt-get install python-pip -y ; pip install pygithub3 ; pip install polling ; python watch-dog.py {{ user  }} {{ repo  }} {{ web_url  }} {{ poll_in }} '
+         #no_log: true
